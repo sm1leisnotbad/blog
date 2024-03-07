@@ -1,0 +1,31 @@
+baseURL: https://example.org/
+languageCode: en-us
+title: My Website
+theme: PaperMod
+
+menu:
+  main:
+    - identifier: "home"
+      name: "Home"
+      url: "/"
+      weight: 10
+    - identifier: "posts"
+      name: "Posts"
+      url: "/posts/"
+      weight: 20 
+
+params:
+  env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  description: "ExampleSite description"
+  keywords: [Blog, Portfolio, PaperMod]
+  author: Me
+  defaultTheme: dark
+  homeInfoParams:
+    Title: "Hi there \U0001F44B"
+    Content: >-
+      Welcome to my website.      
+  socialIcons:
+    - name: email
+      url: 'mailto:tnh0087@gmail.com'
+    - name: github
+      url: https://github.com/sm1leisnotbad
