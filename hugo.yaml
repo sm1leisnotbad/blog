@@ -31,7 +31,7 @@ params:
   homeInfoParams:
     Title: "Hi there \U0001F44B"
     Content: >-
-      Welcome to my website.      
+      I love you.     
   socialIcons:
     - name: email
       url: 'mailto:tnh0087@gmail.com'

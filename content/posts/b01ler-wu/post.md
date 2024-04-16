@@ -11,7 +11,7 @@ tags : ["write-up", "b01lerctf"]
 
 The function `super_optimized_calculation` is a Fibonacci generator.
 To solve this chall, we just use the 90th Fibonacci number and modulo it by each number in the v6 array.
-![alt text](images/image.png)
+![alt text](/posts/b01ler-wu/image.png)
 Code: 
 ```python
 v6=[0]*25  
@@ -98,12 +98,7 @@ Flag: `bctf{345y-p4s5w0rd->w<}`
 
 Because we can input v7 with the length 86, we can overwrite the return address of the function `main` to the address of the function `global_thermo_nuclear_war` to get the flag.
 
-
-```python
-from pwn import *
-
-
-```
+![alt text](/posts/b01ler-wu/image-1.png)
 ### easy-note
 
 This challenge give us a menu which have 5 options: add, delete, view, edit and resize. The binary allow us to modify the content of note whatever it is free or not. To solve it, I use the UAF and tcache poisoning technique to get the shell.

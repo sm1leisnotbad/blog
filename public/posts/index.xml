@@ -6,24 +6,22 @@
     <description>Recent content in Posts on sm1le</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Jan 2023 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 15 Apr 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="//localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BoilerCTF Write-up</title>
+      <link>//localhost:1313/posts/b01ler-wu/post/</link>
+      <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/posts/b01ler-wu/post/</guid>
+      <description>Reverse Annnnnnny-Second-Now The function super_optimized_calculation is a Fibonacci generator. To solve this chall, we just use the 90th Fibonacci number and modulo it by each number in the v6 array. Code:
+v6=[0]*25 v6[0] = 35831; v6[1] = 143; v6[2] = 1061; v6[3] = 877; v6[4] = 29463179; v6[5] = 229; v6[6] = 112; v6[7] = 337; v6[8] = 1061; v6[9] = 47; v6[10] = 29599; v6[11] = 145; v6[12] = 127; v6[13] = 271639; v6[14] = 127; v6[15] = 353; v6[16] = 193; v6[17] = 191; v6[18] = 337; v6[19] = 1061; v6[20] = 193; v6[21] = 353; v6[22] = 269; v6[23] = 487; v6[24] = 245; a = 2880067194370816120 &amp;amp; ((1&amp;lt;&amp;lt;64)-1) for i in v6: print(chr(a%i),end=&amp;#39;&amp;#39;) js-safe After deobfuscating the code, we can see that the function addToPassword use some operation to check the pass code.</description>
+    </item>
     <item>
       <title>This is my test blog post</title>
       <link>//localhost:1313/posts/main/</link>
       <pubDate>Sun, 01 Jan 2023 00:00:00 +0000</pubDate>
       <guid>//localhost:1313/posts/main/</guid>
       <description>Hi Nothing here</description>
-    </item>
-    <item>
-      <title>This is my test blog post</title>
-      <link>//localhost:1313/posts/b01ler-wu/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/b01ler-wu/</guid>
-      <description>Rev Annnnnnny-Second-Now The function super_optimized_calculation is a Fibonacci generator. To solve this chall, we just use the 90th Fibonacci number and modulo it by each number in the v6 array.
-Code:
-js-safe After deobfuscating the code, we can see that the function addToPassword use some operation to check the pass code. If true, it uses this pass code as a key to decrypt the AES encrypted flag.
-function addToPassword(_0x43b7e8) { if (_0x12b1c8.</description>
     </item>
   </channel>
 </rss>
