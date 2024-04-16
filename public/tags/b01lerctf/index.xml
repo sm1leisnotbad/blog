@@ -1,20 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Posts on sm1le</title>
-    <link>//localhost:1313/posts/</link>
-    <description>Recent content in Posts on sm1le</description>
+    <title>B01lerctf on sm1le</title>
+    <link>//localhost:1313/tags/b01lerctf/</link>
+    <description>Recent content in B01lerctf on sm1le</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sun, 01 Jan 2023 00:00:00 +0000</lastBuildDate>
-    <atom:link href="//localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>This is my test blog post</title>
-      <link>//localhost:1313/posts/main/</link>
-      <pubDate>Sun, 01 Jan 2023 00:00:00 +0000</pubDate>
-      <guid>//localhost:1313/posts/main/</guid>
-      <description>Hi Nothing here</description>
-    </item>
+    <atom:link href="//localhost:1313/tags/b01lerctf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>This is my test blog post</title>
       <link>//localhost:1313/posts/b01ler-wu/</link>

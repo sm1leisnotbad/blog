@@ -1,8 +1,10 @@
 ---
-title: "My first blog post"
+title: "This is my test blog post"
 date: 2023-01-01
 draft: false
-
+tags : ["test", "blog"]
 ---
 
-# hi 
+# Hi
+
+Nothing here

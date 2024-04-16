@@ -12,7 +12,15 @@ menu:
     - identifier: "posts"
       name: "Posts"
       url: "/posts/"
-      weight: 20 
+      weight: 20
+    - identifier: "Tags"
+      name: "Tags"
+      url: "/tags/"
+      weight: 30 
+    - identifier: "Search"
+      name: "Search"
+      url: "/search/"
+      weight: 40
 
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
@@ -29,3 +37,13 @@ params:
       url: 'mailto:tnh0087@gmail.com'
     - name: github
       url: https://github.com/sm1leisnotbad
+
+taxonomies:
+  category: categories
+  tag: tags
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
