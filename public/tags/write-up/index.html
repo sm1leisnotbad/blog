@@ -117,6 +117,20 @@ v6=[0]*25 v6[0] = 35831; v6[1] = 143; v6[2] = 1061; v6[3] = 877; v6[4] = 2946317
   <footer class="entry-footer"><span title='2024-04-15 00:00:00 +0000 UTC'>April 15, 2024</span>&nbsp;·&nbsp;Me</footer>
   <a class="entry-link" aria-label="post link to BoilerCTF Write-up" href="//localhost:1313/posts/b01ler-wu/post/"></a>
 </article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">Headless Hackthebox
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>User flag Recon Port scanning: Directory scanning:
+Server open a port (5000) for running a website. After scanning directories, I found 2 interesting directories :
+/support which we can access by For questions button. It has a form to submit a message. By checking its request, I find that it is using POST method to send data to the server. I try to send a message with a payload &lt;h1&gt;alert(1)&lt;/h1&gt; and it responses a alert form which includes header of this request....</p>
+  </div>
+  <footer class="entry-footer"><span title='2024-04-15 00:00:00 +0000 UTC'>April 15, 2024</span>&nbsp;·&nbsp;Me</footer>
+  <a class="entry-link" aria-label="post link to Headless Hackthebox" href="//localhost:1313/posts/headless-htb/post/"></a>
+</article>
     </main>
     
 <a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">

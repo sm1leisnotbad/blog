@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Htb on sm1le</title>
+    <link>//localhost:1313/tags/htb/</link>
+    <description>Recent content in Htb on sm1le</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 15 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="//localhost:1313/tags/htb/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Headless Hackthebox</title>
+      <link>//localhost:1313/posts/headless-htb/post/</link>
+      <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/posts/headless-htb/post/</guid>
+      <description>User flag Recon Port scanning: Directory scanning:
+Server open a port (5000) for running a website. After scanning directories, I found 2 interesting directories :
+/support which we can access by For questions button. It has a form to submit a message. By checking its request, I find that it is using POST method to send data to the server. I try to send a message with a payload &amp;lt;h1&amp;gt;alert(1)&amp;lt;/h1&amp;gt; and it responses a alert form which includes header of this request.</description>
+    </item>
+  </channel>
+</rss>
