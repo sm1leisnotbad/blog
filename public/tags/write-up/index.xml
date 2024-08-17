@@ -6,8 +6,17 @@
     <description>Recent content in Write-Up on sm1le</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 05 Jul 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 17 Aug 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="//localhost:1313/tags/write-up/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Sea Hackthebox</title>
+      <link>//localhost:1313/posts/sea-htb/post/</link>
+      <pubDate>Sat, 17 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>//localhost:1313/posts/sea-htb/post/</guid>
+      <description>User flag Recon Firtsly, sea.htb is built from wondercms. You can check it by enumerating the web or searching the string velik71 appeared on the banner.
+Checking the /themes/bike/wcms-modules.json, I found the version of this website is 3.2.0. It has a CVE-2023-41425 that allows an attacker to a remote attacker to execute arbitrary code via a crafted script uploaded to the installModule component.
+I also found a contact.php page which allows us to send infomation including a malicous link to the admin.</description>
+    </item>
     <item>
       <title>Headless Hackthebox</title>
       <link>//localhost:1313/posts/headless-htb/post/</link>
