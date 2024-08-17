@@ -6,12 +6,12 @@
     <description>Recent content in Htb on sm1le</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 15 Apr 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 05 Jul 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="//localhost:1313/tags/htb/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Headless Hackthebox</title>
       <link>//localhost:1313/posts/headless-htb/post/</link>
-      <pubDate>Mon, 15 Apr 2024 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 05 Jul 2024 00:00:00 +0000</pubDate>
       <guid>//localhost:1313/posts/headless-htb/post/</guid>
       <description>User flag Recon Port scanning: Directory scanning:
 Server open a port (5000) for running a website. After scanning directories, I found 2 interesting directories :

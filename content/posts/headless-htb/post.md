@@ -1,6 +1,6 @@
 ---
 title: "Headless Hackthebox"
-date: 2024-04-15
+date: 2024-07-05
 draft: false
 tags : ["write-up", "htb"]
 
