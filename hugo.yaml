@@ -31,7 +31,9 @@ params:
   homeInfoParams:
     Title: "Hi there \U0001F44B"
     Content: >-
-      I love you.     
+      I love you.
+  assets:
+    favicon: /assets/favicon.png
   socialIcons:
     - name: email
       url: 'mailto:tnh0087@gmail.com'

